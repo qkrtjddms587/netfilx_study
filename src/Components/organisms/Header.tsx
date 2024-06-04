@@ -1,46 +1,85 @@
 import { styled } from "styled-components";
-import { useAnimation, useScroll } from "../../libs/utills";
-import Avatar from "../atoms/Avatar";
-import AlarmPage from "../molecules/AlarmPage";
-import Logo from "../atoms/Logo";
-import NavItems from "../molecules/NavItems";
-import SearchForm from "../molecules/SearchForm";
+import { useScrollAnimation, useWindowDimenstion } from "../../libs/utills";
 
-const Nav = styled.nav<{ $navAnimation: boolean }>`
+import Logo from "../common/Logo";
+import SearchForm from "../header/SearchForm";
+import NavItems from "../header/NavItems";
+import { useState } from "react";
+import HeaderAlarm from "../header/HoverAlarm";
+import HeaderProfile from "../header/HoverProfile";
+
+const Nav = styled.nav`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
   top: 0;
+  left: 0;
   color: white;
-  padding: 20px 60px;
-  font-size: 14px;
-  background-color: transparent;
-  background-color: ${(props) =>
-    props.$navAnimation ? "rgba(0,0,0,1)" : "rgba(0,0,0,0)"};
+  padding: 10px 30px;
+  font-size: 0.8vw;
+  background-image: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.7) 10%,
+    transparent
+  );
   transition: background-color 0.2s linear;
+  z-index: 2;
+  &.bg-black {
+    background-color: rgba(0, 0, 0, 1);
+  }
+  &.bg-transparents {
+    background-color: transparent;
+  }
 `;
 
-const Col = styled.div`
+const NavCol = styled.div`
   display: flex;
   align-items: center;
+  gap: 30px;
 `;
 
+const IconCol = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export interface HandlerObj {
+  onHoverIndex: number | null;
+  onHover: (index: number) => void;
+  onLeave: () => void;
+}
+
 export default function Header() {
-  const scrollY = useScroll();
-  const navAnimation = useAnimation(scrollY, scrollY > 80);
+  const onAnimation = useScrollAnimation(80);
+  const width = useWindowDimenstion();
+  const [onHoverIndex, setOnHoverIndex] = useState<number | null>(null);
+  let timer: ReturnType<typeof setTimeout>;
+  const handlerObj = {
+    onHoverIndex,
+    onHover(hoverIndex: number) {
+      clearTimeout(timer);
+      setOnHoverIndex(hoverIndex);
+    },
+    onLeave() {
+      timer = setTimeout(() => {
+        setOnHoverIndex(null);
+      }, 200);
+    },
+  };
   return (
-    <Nav $navAnimation={navAnimation}>
-      <Col>
+    <Nav className={onAnimation ? "bg-black" : "bg-transparent"}>
+      <NavCol>
         <Logo />
-        <NavItems />
-      </Col>
-      <Col>
+        <NavItems isRow={width > 800} handlerObj={handlerObj} />
+      </NavCol>
+      <IconCol>
         <SearchForm />
-        <AlarmPage />
-        <Avatar />
-      </Col>
+        <HeaderAlarm {...handlerObj} />
+        <HeaderProfile {...handlerObj} />
+      </IconCol>
     </Nav>
   );
 }

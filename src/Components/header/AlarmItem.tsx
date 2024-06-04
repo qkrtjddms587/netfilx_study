@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 const Wrapper = styled.li`
-  width: 100%;
+  width: 400px;
   height: 100px;
   display: flex;
   padding: 15px;
@@ -9,7 +9,7 @@ const Wrapper = styled.li`
   border-bottom: 1px solid ${(props) => props.theme.black.lighter};
 `;
 
-const Img = styled.div`
+const Img = styled.img`
   width: 100px;
   background-color: royalblue;
   border-radius: 5px;
@@ -32,13 +32,18 @@ const Contents = styled.div`
   }
 `;
 
-export default function AlarmItem() {
+interface AlarmItemProps {
+  imgUrl: string;
+  comment: string;
+}
+
+export default function AlarmItem({ imgUrl, comment }: AlarmItemProps) {
   return (
     <Wrapper>
-      <Img />
+      <Img src={imgUrl} />
       <Contents>
         <h1>신규 콘텐츠</h1>
-        <h1>로기완</h1>
+        <h1>{comment}</h1>
         <h2>1주 전</h2>
       </Contents>
     </Wrapper>

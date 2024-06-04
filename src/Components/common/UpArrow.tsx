@@ -1,19 +1,25 @@
 import { styled } from "styled-components";
 
-const Svg = styled.svg`
+interface UpArrowProps {
+  position?: "middle" | "right";
+}
+
+const Svg = styled.svg<{ $position: string }>`
   position: absolute;
-  top: 25px;
-  right: 0;
-  font-size: 10px;
+  top: -20px;
+  right: ${({ $position }) => ($position === "right" ? "7px" : "90px")};
+  width: 20px;
+  height: 20px;
 `;
 
-export default function TopArrow() {
+export default function UpArrow({ position = "right" }: UpArrowProps) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
       className="w-6 h-6"
+      $position={position}
     >
       <path
         fillRule="evenodd"

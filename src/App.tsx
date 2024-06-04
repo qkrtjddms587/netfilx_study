@@ -28,12 +28,12 @@ const GlobalStyle = createGlobalStyle`
     display: block;
   }
   body {
+    user-select:none;
     font-weight:300;
     font-family: 'Source Sans Pro', sans-serif;
     color: white;
-    background-color: gray;
+    background-color: black;
     line-height: 1.2;
-    height: 200vh;
   }
   ol, ul {
     list-style: none;
@@ -61,6 +61,9 @@ const GlobalStyle = createGlobalStyle`
   }
   *{
     box-sizing: border-box;
+  }
+  html {
+    font-size: 10px;
   }
 `;
 

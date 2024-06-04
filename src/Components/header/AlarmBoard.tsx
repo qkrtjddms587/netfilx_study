@@ -1,15 +1,21 @@
 import { styled } from "styled-components";
-import AlarmItem from "../atoms/AlarmItem";
+import AlarmItem from "./AlarmItem";
+import UpArrow from "../common/UpArrow";
 
 const Wrapper = styled.ul`
   position: absolute;
   top: 50px;
-  right: -10px;
-  width: 400px;
+  right: 0;
+`;
+
+const Board = styled.div`
+  display: flex;
+  flex-direction: column;
   opacity: 0.9;
   background-color: ${(props) => props.theme.black.deepDark};
   border: 1px solid ${(props) => props.theme.black.lighter};
   border-top: 2px solid ${(props) => props.theme.white.lighter};
+  position: relative;
 `;
 
 export default function AlarmBoard() {
@@ -19,9 +25,12 @@ export default function AlarmBoard() {
   ];
   return (
     <Wrapper>
-      {alarmItems.map((_, i) => (
-        <AlarmItem key={i} />
-      ))}
+      <Board>
+        <UpArrow />
+        {alarmItems.map((alarm, i) => (
+          <AlarmItem {...alarm} key={i} />
+        ))}
+      </Board>
     </Wrapper>
   );
 }
